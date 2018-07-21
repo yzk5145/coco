@@ -11,18 +11,18 @@ import hhs_utils as utils
 import data
 import const
 
-def estimate_hg(alg, sizehist, seed=20, budget=1.0, is_round=False):
+def estimate_hg(norm, sizehist, seed=20, budget=1.0, is_round=False):
     hg = utils.expand_sizehist_to_hg(sizehist)
     #hg is sorted
     min_size = hg[0]
 
-    if alg == 'l1':
+    if norm == 'l1':
         prng = numpy.random.RandomState(seed)
         _, noisy_hg = com.noisy_group_sizes(sizehist, budget, prng)
 
         hg_hat = iso.isotonic_l1(noisy_hg, var_type='CONTINUOUS', nonnegative=True,
             starts_at=min_size, ends_at=None, weighted_total=None)
-    elif alg == 'l2':
+    elif norm == 'l2':
         hg_hat = pav.get_pav_estimate(sizehist, seed, budget, starts_at=min_size)
 
     #round the pav_Hg
@@ -52,13 +52,8 @@ def evaluate_hg(sizehist, hg_hat):
     '''
     evaluate hg_hat with emd, will round hg_hat
     '''
-    sizehist_hat = numpy.zeros(const.public_max_size+1)
-    for i in range(hg_hat.size):
-        if hg_hat[i].is_integer():
-            sizehist_hat[int(hg_hat[i])] += 1
-        else:
-            sizehist_hat[int(round(hg_hat[i]))] += 1
-
+    #convert hg_hat to size histogram
+    sizehist_hat = utils.convert_esthg_to_sizehist(hg_hat, const.public_max_size)
     err = eva.emd(sizehist, sizehist_hat)
     return err
 
