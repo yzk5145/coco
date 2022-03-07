@@ -100,6 +100,14 @@ hierarchical version: replace the retrieve_taxi_sizehist(dataset) in data.py
 * v0.2.0: features including hierarchical version of Hc and Hg methods
 * v0.1.0: features including non-hierarchical version of Hc and Hg methods
 
-## Contributors
-
-* **Yu-Hsuan Kuo**: <yzk5145@cse.psu.edu> 
+## Citing
+Please refer the paper:
+```
+@article{kuo11differentially,
+      title={Differentially Private Hierarchical Count-of-Counts Histograms},
+      author={Kuo, Yu-Hsuan and Chiu, Cho-Chun and Kifer, Daniel and Hay, Michael and Machanavajjhala, Ashwin},
+      journal={Proceedings of the VLDB Endowment},
+      volume={11},
+      number={11}
+}
+```
